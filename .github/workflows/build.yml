@@ -10,17 +10,17 @@ jobs:
       DIR: .
       FILE: resume
     steps:
-      - name: Set up Git repository
+      - name: Set Up Git Repository
         uses: actions/checkout@v4
-      - name: resume
+      - name: Compile PDF
         uses: dante-ev/latex-action@latest
         with:
           root_file: ${{ env.FILE }}
           working_directory: ${{ env.DIR }}
           compiler: lualatex
-      - name: move
+      - name: Move Resume Artifact
         run: mkdir -p github_artifacts && mv ${{ env.DIR }}/${{ env.FILE }}.pdf ./github_artifacts/
-      - name: Upload pdf as artifact
+      - name: Upload PDF As Artifact
         uses: actions/upload-artifact@v4
         with:
           name: ${{ env.FILE }}.pdf
@@ -44,15 +44,3 @@ jobs:
           publish_branch: build
           force_orphan: true
           enable_jekyll: true
-  copy-index-to-build:
-    needs: [deploy]
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - name: Copy To Branches Action
-        uses: planetoftheweb/copy-to-branches@v1.3
-        env:
-          key: main
-          files: index.html CNAME
