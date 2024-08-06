@@ -3,10 +3,6 @@
 name: build
 on: [push]
 
-permissions:
-    contents: read
-    pages: write
-
 jobs:
   build:
     runs-on: ubuntu-latest
