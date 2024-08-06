@@ -1,4 +1,4 @@
-![build](https://github.com/nredick/portfolio/actions/workflows/build.yml/badge.svg)
+![build](https://github.com/nredick/resume-template/actions/workflows/build.yml/badge.svg)
 
 # Template Documentation
 
