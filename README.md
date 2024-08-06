@@ -54,5 +54,6 @@ In the preamble of the `tex` document (before \begin{document}), add:
 
 > Note that the description is optional and can be removed.
 
+![alt text](image.png)
 
 > This Github Workflow setup was inspired by [jitinnair1/autoCV](https://github.com/jitinnair1/autoCV). The $\LaTeX$ source code is my own.
