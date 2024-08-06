@@ -10,7 +10,7 @@ jobs:
       DIR: .
       FILE: resume
     steps:
-      - name: Set Up Git Repository
+      - name: Checkout
         uses: actions/checkout@v4
       - name: Compile PDF
         uses: dante-ev/latex-action@latest
@@ -18,7 +18,7 @@ jobs:
           root_file: ${{ env.FILE }}
           working_directory: ${{ env.DIR }}
           compiler: lualatex
-      - name: Move Resume Artifact
+      - name: Move PDF Artifact
         run: mkdir -p github_artifacts && mv ${{ env.DIR }}/${{ env.FILE }}.pdf ./github_artifacts/
       - name: Upload PDF As Artifact
         uses: actions/upload-artifact@v4
@@ -31,12 +31,13 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - uses: actions/download-artifact@v4
+      - name: Download PDF Artifact
+        uses: actions/download-artifact@v4
         with:
           path: github_artifacts
-      - name: move
+      - name: Move
         run: mkdir -p github_deploy && mv github_artifacts/*/* github_deploy
-      - name: deploy on orphan branch
+      - name: Deploy On Orphan Branch
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -44,3 +45,31 @@ jobs:
           publish_branch: build
           force_orphan: true
           enable_jekyll: true
+  preview:
+    needs: [deploy]
+    runs-on: ubuntu-latest
+    env:
+      DIR: .
+      FILE: resume
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: build
+      - name: Convert PDF to PNG
+        uses: docker://pandoc/core:2.9
+        with:
+          args: >-
+              --standalone
+              --output=${{ env.FILE }}.png
+              ${{ env.FILE }}.pdf
+      - name: Upload PNG As Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.FILE }}.png
+          path: ./github_artifacts
+      - name: Download PNG Artifact
+        uses: actions/download-artifact@v4
+        with:
+          path: github_artifacts
+          name: ${{ env.FILE }}.png
