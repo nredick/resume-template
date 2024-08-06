@@ -1,0 +1,32 @@
+% resume.sty
+\ProvidesPackage{resume}[2024/08/05 Academic RESUME Stylings]
+
+% define colors
+\RequirePackage[dvipsnames]{xcolor}
+\definecolor{highlightcolor}{HTML}{2e70bf}
+\definecolor{sectioncolor}{HTML}{1a406c}
+
+% set paragraph indent, skip to zero
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt}
+
+% set up hypperef links
+\hypersetup{
+    breaklinks,
+    urlcolor=highlightcolor,
+}
+
+% underline all links
+\makeatletter
+\patchcmd{\hyper@link@}
+  {{\Hy@tempb}{#4}}
+  {{\Hy@tempb}{\underline{#4}}}
+  {}{}
+\makeatother
+
+% style section headings
+\RequirePackage{titlesec}
+\RequirePackage{multicol}
+\RequirePackage{multirow}
+\titleformat{\section}{\color{highlightcolor}\large\scshape\raggedright}{}{0em}{}[\titlerule]
+\titlespacing{\section}{0em}{\defaultspacing}{\defaultspacing} % left, before, after

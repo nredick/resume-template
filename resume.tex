@@ -1,0 +1,78 @@
+% !TeX root = resume.tex
+\documentclass{resume} % custom class file
+\usepackage{resume} % custom styling
+
+%% PREAMBLE %%
+\usepackage[english]{babel}
+\usepackage{lipsum}  % Load the lipsum package for fake text
+
+%% SET DEFAULTS %%
+\renewcommand{\defaultseparator}{$|$} % set the default separator
+
+%% END PREAMBLE %%
+
+%% BEGIN DOCUMENT %%
+\begin{document}
+
+%% RESUME HEADER %%
+\begin{resumeheader}
+    %% LOCATION: optionally add location, on its own line between name and resume header links
+    % \resumeheadercontent{firstname}{lastname}[location][\faIcon{map-marker-alt}] % with optional location arg, with location icon
+    % \resumeheadercontent{firstname}{lastname}[location] % with optional location arg, no location icon
+    \resumeheadercontent{firstname}{lastname} % without optional location arg
+
+    %% RESUME HEADER LINKS %%
+    \mbox{\small % mbox keeps links on the same line
+        %% LOCATION: alternatively, add location to resume links
+        \inlinelocation{location} \separator
+        % example with icon and | separator
+        \resumeheaderlink{https://example.com}{Example Link}[\faGlobe]
+        \separator
+        \resumeheaderlink{https://example.com}{Example Link}[\faGlobe]
+        \separator
+        \resumeheaderlink{https://example.com}{Example Link}[\faGlobe]
+        \separator
+        \resumeheaderlink{https://example.com}{Example Link}[\faGlobe]
+    }
+\end{resumeheader}
+
+%% EDUCATION %%
+\section{Education}
+% Example of \schoolwithgpa
+\schoolwithgpa[2]{University of Example}{Example City, EX}{May 2024}{3.83/4.00}[
+    \begin{resumeitemize}
+        \item \lipsum[1][1-2]
+        \item \lipsum[1][1-4]
+    \end{resumeitemize}
+]
+
+% Example of \schoolwithoutgpa
+\schoolwithoutgpa[1]{University of Example}{Example City, EX}{May 2024}[\lipsum[1][1-2]]
+
+%% EXPERIENCE %%
+\section{Experience}
+
+%% RESEARCH %%
+\section{Research}
+
+%% AWARDS %%
+\section{Awards}
+
+%% EXTRA-CURRICULARS %%
+\section{Extra-curriculars}
+
+%% PROFESSIONAL DEVELOPMENT %%
+\section{Professional Development}
+
+%% SKILLS %%
+\section{Skills}
+
+%% PUBLICATIONS \& PRESENTATIONS %%
+\section{Publications \& Presentations}
+
+%% FOOTER %%
+\vfill
+\center{\footnotesize {Last updated: \today}}
+
+%% END DOCUMENT %%
+\end{document}
