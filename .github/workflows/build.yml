@@ -56,13 +56,10 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: build
-      - name: Convert PDF to PNG
-        uses: docker://pandoc/core:2.9
+      - name: ImageMagick Action
+        uses: jruipinto/ImageMagick-action@v1
         with:
-          args: >-
-              --standalone
-              --output=${{ env.FILE }}.png
-              ${{ env.FILE }}.pdf
+          command: mogrify -format png ${{ env.FILE }}.pdf
       - name: Upload PNG As Artifact
         uses: actions/upload-artifact@v4
         with:
