@@ -6,9 +6,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      # Edit here with the names of your latex file and directory (can use ".")
       DIR: .
-      FILE: resume
+      FILE: resume # desired tex/pdf file name (without extension)
     steps:
       - name: Checkout
         uses: actions/checkout@v4

@@ -17,37 +17,52 @@
 %% RESUME HEADER %%
 \begin{resumeheader}
     %% LOCATION: optionally add location, on its own line between name and resume header links
-    % \resumeheadercontent{firstname}{lastname}[location][\faIcon{map-marker-alt}] % with optional location arg, with location icon
-    % \resumeheadercontent{firstname}{lastname}[location] % with optional location arg, no location icon
-    \resumeheadercontent{firstname}{lastname} % without optional location arg
+    % \resumeheadercontent{firstname}{lastname}[Example City, EX][\faIcon{map-marker-alt}] % with optional location arg, with location icon
+    \resumeheadercontent{firstname}{lastname}[Example City, EX] % with optional location arg, no location icon
+    % \resumeheadercontent{firstname}{lastname} % without optional location arg
 
     %% RESUME HEADER LINKS %%
     \mbox{\small % mbox keeps links on the same line
         %% LOCATION: alternatively, add location to resume links
-        \inlinelocation{location} \separator
-        % example with icon and | separator
-        \resumeheaderlink{https://example.com}{Example Link}[\faGlobe]
+        \inlinelocation{Example City, EX} \separator
+
+        % links with icon and separator
+        \resumeheaderlink{tel:+01234567890}{+0 (123) 456-7890}[\faPhone]
         \separator
-        \resumeheaderlink{https://example.com}{Example Link}[\faGlobe]
+        \resumeheaderlink{mailto:email@domain.com}{email@domain.com}[\faEnvelope]
         \separator
-        \resumeheaderlink{https://example.com}{Example Link}[\faGlobe]
+        \resumeheaderlink{https://linkedin.com/in/username}{username}[\faLinkedin]
         \separator
-        \resumeheaderlink{https://example.com}{Example Link}[\faGlobe]
+        \resumeheaderlink{https://github.com/username}{username}[\faGithub]
+        \separator
+        \resumeheaderlink{https://orcid.org/0000-0000-0000-0000}{0000-0000-0000-0000}[\faOrcid]
     }
 \end{resumeheader}
 
 %% EDUCATION %%
 \section{Education}
-% Example of \schoolwithgpa
-\schoolwithgpa[2]{University of Example}{Example City, EX}{May 2024}{3.83/4.00}[
+% Example of \school
+\school[2]{University of Example}{Example City, EX}{\printdate{2024/05/01}}[3.21/4.00][degree II][
     \begin{resumeitemize}
         \item \lipsum[1][1-2]
-        \item \lipsum[1][1-4]
+        \item \lipsum[1][2-5]
     \end{resumeitemize}
 ]
 
-% Example of \schoolwithoutgpa
-\schoolwithoutgpa[1]{University of Example}{Example City, EX}{May 2024}[\lipsum[1][1-2]]
+\school[2]{University of Example}{Example City, EX}{\printdate{2024/05/01}}[][degree II][
+    {\lipsum[1][2-5]}
+]
+
+\school[1]{University of Example}{Example City, EX}{\printdate{2024/05/01}}[3.21/4.00][degree II][
+    {\lipsum[1][2-5]}
+]
+
+\school[1]{University of Example}{Example City, EX}{\printdate{2024/05/01}}[][degree II][
+    \begin{resumeitemize}
+        \item \lipsum[1][1-2]
+        \item \lipsum[1][2-5]
+    \end{resumeitemize}
+]
 
 %% EXPERIENCE %%
 \section{Experience}
@@ -67,12 +82,18 @@
 %% SKILLS %%
 \section{Skills}
 
+% example skill bars
+\skillbar{French}{64}[3]
+
+\skillbar{Python}{33}[2]
+
+\skillbar{Crochet}{87}
+
 %% PUBLICATIONS \& PRESENTATIONS %%
 \section{Publications \& Presentations}
 
 %% FOOTER %%
-\vfill
-\center{\footnotesize {Last updated: \today}}
+\footer
 
 %% END DOCUMENT %%
 \end{document}

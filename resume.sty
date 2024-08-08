@@ -3,17 +3,25 @@
 
 % define colors
 \RequirePackage[dvipsnames]{xcolor}
-\definecolor{highlightcolor}{HTML}{2e70bf}
-\definecolor{sectioncolor}{HTML}{1a406c}
+\definecolor{accent}{HTML}{2e70bf}
+\definecolor{white}{RGB}{255,255,255}
+\definecolor{black}{RGB}{0,0,0}
+
+\lightercolor{accent}{25}{lightaccent}
+\lightercolor{accent}{50}{darkaccent}
+\lightercolor{black}{50}{halfblack}
 
 % set paragraph indent, skip to zero
 \setlength{\parindent}{0pt}
 \setlength{\parskip}{0pt}
+\setlength{\baselineskip}{0pt}
 
 % set up hypperef links
 \hypersetup{
+    colorlinks,
     breaklinks,
-    urlcolor=highlightcolor,
+    urlcolor=accent,
+    linkcolor=accent,
 }
 
 % underline all links
@@ -28,5 +36,7 @@
 \RequirePackage{titlesec}
 \RequirePackage{multicol}
 \RequirePackage{multirow}
-\titleformat{\section}{\color{highlightcolor}\large\scshape\raggedright}{}{0em}{}[\titlerule]
-\titlespacing{\section}{0em}{\defaultspacing}{\defaultspacing} % left, before, after
+% \titleformat{⟨command⟩}[⟨shape⟩]{⟨format⟩}{⟨label⟩}{⟨sep⟩}{⟨before-code⟩}[⟨after-code⟩]
+\titleformat{\section}[block]{\color{accent}\large\scshape\raggedright}{}{0em}{}[\titlerule]
+
+\titlespacing{\section}{0ex}{-0.15em}{\defaultvspacing} % left, before, after
