@@ -17,6 +17,7 @@ jobs:
           root_file: ${{ env.FILE }}
           working_directory: ${{ env.DIR }}
           compiler: lualatex
+          args: -lualatex -latexoption=-file-line-error -latexoption=-interaction=nonstopmode
       - name: Move PDF Artifact
         run: mkdir -p github_artifacts && mv ${{ env.DIR }}/${{ env.FILE }}.pdf ./github_artifacts/
       - name: Upload PDF As Artifact

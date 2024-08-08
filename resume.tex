@@ -4,10 +4,10 @@
 
 %% PREAMBLE %%
 \usepackage[english]{babel}
-\usepackage{lipsum}  % Load the lipsum package for fake text
+\usepackage{lipsum}  % load the lipsum package for fake text
 
 %% SET DEFAULTS %%
-\renewcommand{\defaultseparator}{$|$} % set the default separator
+\renewcommand{\defaultseparator}{$|$} % example: set the default separator
 
 %% END PREAMBLE %%
 
@@ -41,27 +41,16 @@
 
 %% EDUCATION %%
 \section{Education}
-% Example of \school
-\school[2]{University of Example}{Example City, EX}{\printdate{2024/05/01}}[3.21/4.00][degree II][
+
+\school[2]{University of Example}{Example City, EX}{\daterange{2022/09/01}{2024/06/01}}[3.21/4.00][M.Sc. Applied Mathematics][
     \begin{resumeitemize}
         \item \lipsum[1][1-2]
         \item \lipsum[1][2-5]
     \end{resumeitemize}
 ]
 
-\school[2]{University of Example}{Example City, EX}{\printdate{2024/05/01}}[][degree II][
-    {\lipsum[1][2-5]}
-]
-
-\school[1]{University of Example}{Example City, EX}{\printdate{2024/05/01}}[3.21/4.00][degree II][
-    {\lipsum[1][2-5]}
-]
-
-\school[1]{University of Example}{Example City, EX}{\printdate{2024/05/01}}[][degree II][
-    \begin{resumeitemize}
-        \item \lipsum[1][1-2]
-        \item \lipsum[1][2-5]
-    \end{resumeitemize}
+\school[1]{University of Example}{Example City, EX}{\printdate{2022/05/01}}[][B.Sc. Data Science][
+    \lipsum[1][2-5]
 ]
 
 %% EXPERIENCE %%
@@ -87,7 +76,7 @@
 
 \skillbar{Python}{33}[2]
 
-\skillbar{Crochet}{87}
+\skillbar{LaTeX}{87}
 
 %% PUBLICATIONS \& PRESENTATIONS %%
 \section{Publications \& Presentations}
