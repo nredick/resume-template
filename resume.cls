@@ -115,13 +115,22 @@
         O{\defaultseparator} % character to use as separator
     }{%
     \begin{switch}{#1}
-        \case{2}{
+        \case{0}{
             #2 % sep
         }{
             \hspace{0em}#2\hspace{0em}
         }
     \end{switch}
 }
+
+% define a default link icon
+\newcommand{\defaultlinkicon}{\faLink}
+\NewDocumentCommand{\linkicon}{
+        O{\defaultlinkicon} % character to use as link icon
+    }{%
+    \small\ #1
+}
+
 
 % define the environment for header
 \newenvironment{resumeheader}
@@ -148,7 +157,7 @@
     \colorlet{#3}{#1!#2!black}
 }
 
-% define a command for creating and education block
+% define a command for creating an education block
 \NewDocumentCommand{\school}{
     O{2} % Optional argument: 2-line layout (default) or 1-line layout
     m % Mandatory argument: School Name
@@ -209,6 +218,76 @@
             \IfNoValueTF{#7}
                 {}
                 {#7}
+        }
+    \end{switch}
+
+    % Add vertical spacing after the entry
+    \vspace{\defaultvspacing}
+}
+
+% block for an experience item
+% based on:
+% % \experience[2]{Job Title}{Company Name}{Example City, EX}{\daterange{2022/06/01}{2022/08/01}}[
+%     \begin{resumeitemize}
+%         \item \lipsum[1][1-2]
+%         \item \lipsum[1][2-5]
+%     \end{resumeitemize}
+% ]
+\NewDocumentCommand{\experience}{
+    O{2} % Optional argument: 2-line layout (default) or 1-line layout
+    m % Mandatory argument: Job Title
+    m % Mandatory argument: Company Name
+    m % Mandatory argument: Location
+    m % Mandatory argument: Date
+    O{} % Optional argument: Description (can be empty)
+    O{} % Optional argument: Link to company website (can be empty)
+}{
+    % Determine the layout based on the first argument
+    \begin{switch}{#1}
+        \case{1}{
+            % Case for 1-line layout
+            % Use tabularx environment to arrange content in one line
+            \begin{tabularx}{\textwidth}{@{}lXr@{}}
+                % Display the job title in bold and location in italic
+                \textbf{#2}\hspace{0.5em}@\hspace{0.5em}#3
+                % Optionally include the company website if provided
+                \IfNoValueTF{#7}%
+                    {}%
+                    {\href{#7}{\linkicon}}%
+                % Align the date on the right
+                & \hfill
+                & \textit{#4} \separator #5
+            \end{tabularx}
+
+            % Handle the description based on the type
+            % Check if the description (#6) is provided
+            \IfNoValueTF{#6}
+                {}
+                {#6}
+        }{
+            % Case for 2-line layout (default)
+            % Use tabularx environment to arrange content in two lines
+            \begin{tabularx}{\textwidth}{@{}lXr@{}}
+                % Display the job title in bold
+                \textbf{#2}
+                % Align the date on the right
+                & \hfill
+                & \textbf{#4} \\ % Job Title and Date
+                % Display the company name in italic and location
+                #3
+                % Optionally include the company website if provided
+                \IfNoValueTF{#7}%
+                    {}%
+                    {\href{#7}{\linkicon}}%
+                & \hfill
+                & \textit{#5}
+            \end{tabularx}
+
+            % Handle the description based on the type
+            % Check if the description (#6) is provided
+            \IfNoValueTF{#6}
+                {}
+                {#6}
         }
     \end{switch}
 

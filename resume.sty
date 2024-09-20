@@ -24,13 +24,13 @@
     linkcolor=accent,
 }
 
-% underline all links
-\makeatletter
-\patchcmd{\hyper@link@}
-  {{\Hy@tempb}{#4}}
-  {{\Hy@tempb}{\underline{#4}}}
-  {}{}
-\makeatother
+% todo: underline all links (but not the chain icon)
+% \makeatletter
+% \patchcmd{\hyper@link@}
+%   {{\Hy@tempb}{#4}}
+%   {{\Hy@tempb}{\underline{#4}}}
+%   {}{}
+% \makeatother
 
 % style section headings
 \RequirePackage{titlesec}
