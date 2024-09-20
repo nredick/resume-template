@@ -184,7 +184,7 @@
                 & \IfNoValueTF{#5}%
                     {}%
                     {\@ifmtarg{#5}{}{#5\separator}}%
-                \textbf{#4}
+                #4
             \end{tabularx}
 
             % Handle the description based on the type
@@ -204,7 +204,7 @@
                     {\separator\@ifmtarg{#6}{}{#6} }%
                 % Align the date on the right
                 & \hfill
-                & \textbf{#4} \\ % School Name and Date
+                & #4 \\ % School Name and Date
                 % Display the school location in italic and GPA
                 \textit{#3}
                 & \hfill
@@ -226,13 +226,6 @@
 }
 
 % block for an experience item
-% based on:
-% % \experience[2]{Job Title}{Company Name}{Example City, EX}{\daterange{2022/06/01}{2022/08/01}}[
-%     \begin{resumeitemize}
-%         \item \lipsum[1][1-2]
-%         \item \lipsum[1][2-5]
-%     \end{resumeitemize}
-% ]
 \NewDocumentCommand{\experience}{
     O{2} % Optional argument: 2-line layout (default) or 1-line layout
     m % Mandatory argument: Job Title
@@ -272,15 +265,15 @@
                 \textbf{#2}
                 % Align the date on the right
                 & \hfill
-                & \textbf{#4} \\ % Job Title and Date
-                % Display the company name in italic and location
+                & #5 \\ % Job Title and Date
+                % Display the company name and location
                 #3
                 % Optionally include the company website if provided
                 \IfNoValueTF{#7}%
                     {}%
                     {\href{#7}{\linkicon}}%
                 & \hfill
-                & \textit{#5}
+                & \textit{#4}
             \end{tabularx}
 
             % Handle the description based on the type
@@ -294,6 +287,67 @@
     % Add vertical spacing after the entry
     \vspace{\defaultvspacing}
 }
+
+% block for award item
+\NewDocumentCommand{\award}{
+    O{2} % Optional argument: 2-line layout (default) or 1-line layout
+    m % Mandatory argument: Award Title
+    m % Mandatory argument: Awarding Organization
+    m % Mandatory argument: Date
+    O{} % Optional argument: Amount $$ (can be empty)
+    O{} % Optional argument: Description (can be empty)
+}{
+    % Determine the layout based on the first argument
+    \begin{switch}{#1}
+        \case{1}{
+            % Case for 1-line layout
+            % Use tabularx environment to arrange content in one line
+            \begin{tabularx}{\textwidth}{@{}lXr@{}}
+                % Display the award title in bold and awarding organization in italic
+                \textbf{#2}, #3 % Optionally include the amount if provided
+                \IfNoValueTF{#5}%
+                    {}%
+                    {\ (#5)}%
+                % Align the date on the right
+                & \hfill
+                & #4
+            \end{tabularx}
+
+            % Handle the description based on the type
+            % Check if the description (#6) is provided
+            \IfNoValueTF{#6}
+                {}
+                {#6}
+        }{
+            % Case for 2-line layout (default)
+            % Use tabularx environment to arrange content in two lines
+            \begin{tabularx}{\textwidth}{@{}lXr@{}}
+                % Display the award title in bold
+                \textbf{#2}
+
+                % Align the date on the right
+                & \hfill
+                & #4 \\ % Award Title and Date
+                % Display the awarding organization
+                #3
+                & \hfill
+                & \IfNoValueTF{#5}%
+                    {}%
+                    {#5}
+            \end{tabularx}
+
+            % Handle the description based on the type
+            % Check if the description (#6) is provided
+            \IfNoValueTF{#6}
+                {}
+                {#6}
+        }
+    \end{switch}
+
+    % Add vertical spacing after the entry
+    \vspace{\defaultvspacing}
+}
+
 
 % build skill bars
 \RequirePackage{tikz}
@@ -335,6 +389,9 @@
     \end{tikzpicture}
     \vspace{\defaultvspacing}
 }
+
+
+
 
 % footer
 \newcommand{\footer}{
