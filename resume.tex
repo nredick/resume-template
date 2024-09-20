@@ -7,7 +7,7 @@
 \usepackage{lipsum}  % load the lipsum package for fake text
 
 %% SET DEFAULTS %%
-\renewcommand{\defaultseparator}{$|$} % ex. set the default separator
+% \renewcommand{\defaultseparator}{$|$} % ex. set the default separator
 
 %% END PREAMBLE %%
 
@@ -15,29 +15,12 @@
 \begin{document}
 
 %% RESUME HEADER %%
-\begin{resumeheader}
-    %% LOCATION: optionally add location, on its own line between name and resume header links
-    % \resumeheadercontent{firstname}{lastname}[Example City, EX][\faIcon{map-marker-alt}] % with optional location arg, with location icon
-    \resumeheadercontent{firstname}{lastname}[Example City, EX] % with optional location arg, no location icon
-    % \resumeheadercontent{firstname}{lastname} % without optional location arg
-
-    %% RESUME HEADER LINKS %%
-    \mbox{\small % mbox keeps links on the same line
-        %% LOCATION: alternatively, add location to resume links
-        \inlinelocation{Example City, EX} \separator
-
-        % links with icon and separator
-        \resumeheaderlink{tel:+01234567890}{+0 (123) 456-7890}[\faPhone]
-        \separator
-        \resumeheaderlink{mailto:email@domain.com}{email@domain.com}[\faEnvelope]
-        \separator
-        \resumeheaderlink{https://linkedin.com/in/username}{username}[\faLinkedin]
-        \separator
-        \resumeheaderlink{https://github.com/username}{username}[\faGithub]
-        \separator
-        \resumeheaderlink{https://orcid.org/0000-0000-0000-0000}{0000-0000-0000-0000}[\faOrcid]
-    }
-\end{resumeheader}
+\resumeheader[r]{Firstname}{Lastname}[][0][
+    % links with icon and separator
+    \resumeheaderlink{tel:+01234567890}{+0 (123) 456-7890}[\faPhone]\separator
+    \resumeheaderlink{mailto:email@domain.com}{email@domain.com}[\faEnvelope]\separator
+    \resumeheaderlink{https://linkedin.com/in/username}{username}[\faLinkedin]\separator\resumeheaderlink{https://github.com/username}{username}[\faGithub]\separator\resumeheaderlink{https://orcid.org/0000-0000-0000-0000}{0000-0000-0000-0000}[\faOrcid]
+]
 
 %% EDUCATION %%
 \section{Education}

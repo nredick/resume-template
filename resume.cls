@@ -32,9 +32,13 @@
 
 % switch-case implementation (https://tex.stackexchange.com/a/420399)
 \RequirePackage{xifthen}
+
 \newcommand{\ifequals}[4]{\ifthenelse{\equal{#1}{#2}}{#3}{#4}}
 \newcommand{\case}[2]{#1 #2} % dummy, so there is something to overwrite
-\newenvironment{switch}[1]{\renewcommand{\case}{\ifequals{#1}}}{}
+
+\newenvironment{switch}[1]{%
+    \renewcommand{\case}[2]{\ifequals{#1}{##1}{##2}{}}%
+}{}
 
 % clickable links
 \usepackage[draft=false]{hyperref}
@@ -64,26 +68,49 @@
 
 %% set default spacing
 % set default vertical spacing
-\newcommand{\defaultvspacing}{0.75ex}
+\newcommand{\defaultvspacing}{0.15cm}
 
 % set default horizontal spacing
-\newcommand{\defaulthspacing}{0.75em}
+\newcommand{\defaulthspacing}{0.15cm}
 
-% define resume header
-\NewDocumentCommand{\resumeheadercontent}{m m o o}{%
-    \huge{\scshape #1 #2} \\
-    \IfNoValueTF{#3}%
-        {\vspace{\defaultvspacing}}%
-        {\IfNoValueTF{#4} % Check if the icon parameter is provided
-            {% No icon provided
-            \IfNoValueTF{#3}%
-                {}% No location
-                {\hspace{\defaulthspacing}\large\textit{#3}\hspace{\defaulthspacing}}%
-            }%
-            {% Icon provided
-            \hspace{\defaulthspacing}\large\textit{\raisebox{-0.05\height}{#4}\ #3}\hspace{\defaulthspacing}%
-            }%
-    }%
+% define resumeheader
+\newcommand{\formatheader}[6]{
+    \LARGE{\scshape#2 #3}
+
+    \IfNoValueTF{#4}{}{
+        \normalsize #4
+        \smallskip
+    }
+
+    \small\begin{tabular}{@{}c@{}}#6\end{tabular}
+}
+
+\NewDocumentCommand{\resumeheader}{
+    O{c} % Optional: alignment (c, l, r)
+    m % first name
+    m % last name
+    O{} % Optional: location
+    O{} % Optional: location icon
+    O{} % Optional: links
+}{
+    \begin{switch}{#1}
+        \case{c}{
+            \begin{center}
+                \formatheader{#1}{#2}{#3}{#4}{#5}{#6}
+            \end{center}
+        }
+        \case{l}{
+            \begin{flushleft}
+                \formatheader{#1}{#2}{#3}{#4}{#5}{#6}
+            \end{flushleft}
+        }
+        \case{r}{
+            \begin{flushright}
+                \formatheader{#1}{#2}{#3}{#4}{#5}{#6}
+            \end{flushright}
+        }
+    \end{switch}
+    \vspace{-\defaultvspacing}
 }
 
 % inline location def
@@ -107,20 +134,22 @@
         }
 }
 
-% define a separator to be used for the resume links
+% define a default separator
 \RequirePackage{graphicx}
-\newcommand{\defaultseparator}{$|$}
+\newcommand{\defaultseparator}{|}
 \NewDocumentCommand{\separator}{
-        O{1} % use spacing on either side, defaults to true
+        % O{0} % use spacing on either side, defaults to true
         O{\defaultseparator} % character to use as separator
     }{%
-    \begin{switch}{#1}
-        \case{0}{
-            #2 % sep
-        }{
-            \hspace{0em}#2\hspace{0em}
-        }
-    \end{switch}
+    \hspace{\defaulthspacing}#1\hspace{\defaulthspacing}
+    % \begin{switch}{#1}
+    %     \case{0}{
+    %         #2 % sep
+    %     }
+    %     \case{1}{
+    %         \hspace{0.1em}#2\hspace{0.1em}
+    %     }
+    % \end{switch}
 }
 
 % define a default link icon
@@ -131,11 +160,13 @@
     \small\ #1
 }
 
-
-% define the environment for header
-\newenvironment{resumeheader}
-    {\begin{center}}
-    {\end{center}\vspace{\defaultvspacing}}
+\newenvironment{tightcenter}{%
+  \setlength\topsep{0pt}
+  \setlength\parskip{0pt}
+  \begin{center}
+}{%
+  \end{center}
+}
 
 % define custom itemize
 \RequirePackage{enumitem}
@@ -144,9 +175,6 @@
 % adjust 'label' to use the default bullet
 \newcommand{\defaultbullet}{--}
 \setlist[resumeitemize,1]{partopsep=0pt, topsep=0pt, noitemsep=0pt, nolistsep=0pt, left=0pt, label=\defaultbullet}
-
-% reduce spacing after the resumeheader
-\AtEndEnvironment{resumeheader}{\vspace{-1.75ex}}
 
 % color functions
 \newcommand{\lightercolor}[3]{% Reference Color, Percentage, New Color Name
@@ -192,7 +220,8 @@
             \IfNoValueTF{#7}
                 {}
                 {#7}
-        }{
+        }
+        \case{2}{
             % Case for 2-line layout (default)
             % Use tabularx environment to arrange content in two lines
             \begin{tabularx}{\textwidth}{@{}lXr@{}}
@@ -257,7 +286,8 @@
             \IfNoValueTF{#6}
                 {}
                 {#6}
-        }{
+        }
+        \case{2}{
             % Case for 2-line layout (default)
             % Use tabularx environment to arrange content in two lines
             \begin{tabularx}{\textwidth}{@{}lXr@{}}
@@ -304,7 +334,7 @@
             % Use tabularx environment to arrange content in one line
             \begin{tabularx}{\textwidth}{@{}lXr@{}}
                 % Display the award title in bold and awarding organization in italic
-                \textbf{#2}, #3 % Optionally include the amount if provided
+                \textbf{#2},\ #3 % Optionally include the amount if provided
                 \IfNoValueTF{#5}%
                     {}%
                     {\ (#5)}%
@@ -318,7 +348,8 @@
             \IfNoValueTF{#6}
                 {}
                 {#6}
-        }{
+        }
+        \case{2}{
             % Case for 2-line layout (default)
             % Use tabularx environment to arrange content in two lines
             \begin{tabularx}{\textwidth}{@{}lXr@{}}
@@ -396,7 +427,7 @@
 % footer
 \newcommand{\footer}{
   \vfill
-  \begin{center}
+  \begin{tightcenter}
     \footnotesize{\color{halfblack}{Last updated: \printdayon\today}}
-  \end{center}
+  \end{tightcenter}
 }
