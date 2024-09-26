@@ -15,88 +15,180 @@
 \begin{document}
 
 %% RESUME HEADER %%
-\resumeheader[r]{Firstname}{Lastname}[][0][
-    % links with icon and separator
+\resumeheader[
+    alignment=c,
+    firstname=Jane,
+    lastname=Doe,
+    location={New York, NY}
+]{
+    \inlinelocation{New York, NY}[\faMapMarker]\separator
     \resumeheaderlink{tel:+01234567890}{+0 (123) 456-7890}[\faPhone]\separator
     \resumeheaderlink{mailto:email@domain.com}{email@domain.com}[\faEnvelope]\separator
-    \resumeheaderlink{https://linkedin.com/in/username}{username}[\faLinkedin]\separator\resumeheaderlink{https://github.com/username}{username}[\faGithub]\separator\resumeheaderlink{https://orcid.org/0000-0000-0000-0000}{0000-0000-0000-0000}[\faOrcid]
-]
+    \resumeheaderlink{https://linkedin.com/in/username}{username}[\faLinkedin]\separator
+    \resumeheaderlink{https://github.com/username}{username}[\faGithub]\separator
+    \resumeheaderlink{https://orcid.org/0000-0000-0000-0000}{0000-0000-0000-0000}[\faOrcid]
+}
 
 %% EDUCATION %%
 \section{Education}
 
-\school[2]{University of Example}{Example City, EX}{\daterange{2022/09/01}{2024/06/01}}[3.21/4.00][M.Sc. Applied Mathematics][
+\edu[
+    layout=1,
+    name=University of Example,
+    location={Example City, EX},
+    date=\daterange{2022/06/01}{2022/08/01},
+    gpa=3.21/4.00,
+    degree=MSc
+]{
     \begin{resumeitemize}
         \item \lipsum[1][1-2]
         \item \lipsum[1][2-5]
     \end{resumeitemize}
-]
+}
 
-\school[1]{University of Example}{Example City, EX}{\printdate{2022/05/01}}[][B.Sc. Data Science][
-    \lipsum[1][2-5]
-]
+\edu[
+    layout=2,
+    name=Example College,
+    location={College Town, EX},
+    date=\daterange{2022/06/01}{2022/08/01},
+    gpa=3.21/4.00,
+    degree=BA
+]{
+    \begin{resumeitemize}
+        \item \lipsum[1][1-2]
+        \item \lipsum[1][2-5]
+    \end{resumeitemize}
+}
 
 %% EXPERIENCE %%
 \section{Experience}
 
-\experience[2]{Job Title}{Company Name}{Example City, EX}{\daterange{2022/06/01}{2022/08/01}}[
+\experience[
+    layout=1, % 1 or 2
+    title=Job Title,
+    company=Company,
+    location={Example City, EX}, % use {} when you need a comma in the field
+    date=\daterange{2022/06/01}{2022/08/01},
+    link=https://google.com
+]{
     \begin{resumeitemize}
         \item \lipsum[1][1-2]
         \item \lipsum[1][2-5]
     \end{resumeitemize}
-][https://www.example.com]
+}
 
-\experience[1]{Job Title}{Company Name}{Example City, EX}{\daterange{2022/06/01}{2022/08/01}}[
+\experience[
+    layout=2,
+    title=Job Title,
+    company=Company,
+    location={Example City, EX},
+    date=\daterange{2021/04/01}{2022/05/31},
+    % link=https://google.com
+]{
     \begin{resumeitemize}
         \item \lipsum[1][1-2]
         \item \lipsum[1][2-5]
     \end{resumeitemize}
-][https://www.example.com]
+}
 
 %% RESEARCH %%
 \section{Research}
 
-\experience[1]{Research Assistant}{University Name}{Example City, EX}{\daterange{2022/06/01}{2022/08/01}}[
+% \experience[1]{Research Assistant}{University Name}{Example City, EX}{\daterange{2022/06/01}{2022/08/01}}[
+%     Advised by Dr.~Firstname Lastname.
+%     \begin{resumeitemize}
+%         \item \lipsum[1][1-2]
+%         \item \lipsum[1][2-3]
+%     \end{resumeitemize}
+% ][https://www.example.com]
+
+\experience[
+    layout=1,
+    title=Research Assistant,
+    company=University Name,
+    location={Example City, EX},
+    date=\daterange{2020/06/01}{2020/08/01},
+    link=https://www.example.com
+]{
     Advised by Dr.~Firstname Lastname.
     \begin{resumeitemize}
         \item \lipsum[1][1-2]
         \item \lipsum[1][2-3]
     \end{resumeitemize}
-][https://www.example.com]
+}
 
 %% AWARDS %%
 \section{Awards}
-% \award}{
-%     O{2} % Optional argument: 2-line layout (default) or 1-line layout
-%     m % Mandatory argument: Award Title
-%     m % Mandatory argument: Awarding Organization
-%     m % Mandatory argument: Date
-%     O{} % Optional argument: Amount $$ (can be empty)
-%     O{} % Optional argument: Description (can be empty)
 
-\award[1]{Really Cool Award}{Awarding Organization}{\printdate{2024/06/01}}[\$1000][
-    \quad\lipsum[1][1-2]
-]
+% \award[1]{Really Cool Award}{Awarding Organization}{\printdate{2024/06/01}}[\$1000][
+%     \quad\lipsum[1][1-2]
+% ]
 
-\award[2]{Really Cool Award}{Awarding Organization}{\printdate{2024/06/01}}[\$1000][
+% \award[2]{Really Cool Award}{Awarding Organization}{\printdate{2024/06/01}}[\$1000][
+%     \quad\lipsum[1][2-3]
+% ]
+
+\award[
+    layout=1,
+    title=Best Paper Award,
+    organization=Conference on X,
+    date=2023,
+    amount=\$500
+]{
     \quad\lipsum[1][2-3]
-]
+}
+
+\award[
+    layout=2,
+    title=Best Poster Award,
+    organization=Conference on Y,
+    date=2022,
+    amount=\$250
+]{
+    \quad\lipsum[1][3-4]
+}
 
 %% EXTRA-CURRICULARS %%
 \section{Extra-curriculars}
 
+\experience[
+    layout=1,
+    title=Club President,
+    company=Organization,
+    location={Example City, EX},
+    date=\daterange{2022/06/01}{2022/08/01},
+    link=https://www.example.com
+]{
+    \begin{resumeitemize}
+        \item \lipsum[1][1-2]
+    \end{resumeitemize}
+}
+
+\experience[
+    layout=2,
+    title=Volunteer,
+    company=Organization,
+    location={Example City, EX},
+    date=\daterange{2022/06/01}{2022/08/01},
+    link=https://www.example.com
+]{
+    \begin{resumeitemize}
+        \item \lipsum[1][2-3]
+    \end{resumeitemize}
+}
+
 %% PROFESSIONAL DEVELOPMENT %%
-\section{Professional Development}
+% \section{Professional Development}
 
 %% SKILLS %%
 \section{Skills}
 
 % example skill bars
-\skillbar{French}{64}[3]
+\skillbar[width=6, percent=80, rounding=0pt, layout=1]{Yodelling}
 
-\skillbar{Python}{33}[2]
+\skillbar[width=3.7, height=0.15, rounding=2pt, percent=20, layout=2]{Kitesurfing}
 
-\skillbar{LaTeX}{87}
+\skillbar[width=6, percent=75, layout=3]{Crochet}
 
 %% PUBLICATIONS \& PRESENTATIONS %%
 \section{Publications \& Presentations}
@@ -105,7 +197,7 @@
 % \section{Field Work}
 
 %% FOOTER %%
-\footer
+\lastupdated
 
 %% END DOCUMENT %%
 \end{document}

@@ -1,11 +1,8 @@
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{resume}[2024/08/05 Academic RESUME LaTeX class]
 
-% require lualatex
-% \RequirePackage{iftex}
-% \RequireLuaTeX
-
 % base class, font size
+% todo: make font size adjustable
 \LoadClass[10pt]{article}
 
 % font family
@@ -19,9 +16,11 @@
 
 % for more complex/optional inputs to commands
 \RequirePackage{xparse}
-\RequirePackage{etoolbox} % for AtBeginEnvironment defs, etc
+\RequirePackage{etoolbox} % for AtBeginEnvironment defs, etc.
+\RequirePackage{keyval} % for key-value arguments
 
 % page geometry/margins
+% todo: make margins adjustable
 \RequirePackage[
     a4paper,
     left=1cm,
@@ -41,12 +40,13 @@
 }{}
 
 % clickable links
-\usepackage[draft=false]{hyperref}
+\RequirePackage[draft=false]{hyperref}
 
 % more efficient compilation for links
 \RequirePackage{bookmark}
 
 % date formatting
+% todo: make date formatting adjustable
 % https://ca.mirrors.cicku.me/ctan/macros/latex/contrib/isodate/isodate.pdf
 \RequirePackage[english,num]{isodate}
 \dateinputformat{tex} % (yyyy/mm/dd)
@@ -58,10 +58,11 @@
 \RequirePackage{fontawesome5}
 \RequirePackage{academicons}
 
+% skill bars
+\RequirePackage{tikz}
+
 % table settings
 \RequirePackage{supertabular,tabularx}
-\newlength{\fullcollw}
-\setlength{\fullcollw}{0.5\textwidth}
 
 % centered version of 'X' col. type
 \newcolumntype{C}{>{\centering\arraybackslash}X}
@@ -71,68 +72,7 @@
 \newcommand{\defaultvspacing}{0.15cm}
 
 % set default horizontal spacing
-\newcommand{\defaulthspacing}{0.15cm}
-
-% define resumeheader
-\newcommand{\formatheader}[6]{
-    \LARGE{\scshape#2 #3}
-
-    \IfNoValueTF{#4}{}{
-        \normalsize #4
-        \smallskip
-    }
-
-    \small\begin{tabular}{@{}c@{}}#6\end{tabular}
-}
-
-\NewDocumentCommand{\resumeheader}{
-    O{c} % Optional: alignment (c, l, r)
-    m % first name
-    m % last name
-    O{} % Optional: location
-    O{} % Optional: location icon
-    O{} % Optional: links
-}{
-    \begin{switch}{#1}
-        \case{c}{
-            \begin{center}
-                \formatheader{#1}{#2}{#3}{#4}{#5}{#6}
-            \end{center}
-        }
-        \case{l}{
-            \begin{flushleft}
-                \formatheader{#1}{#2}{#3}{#4}{#5}{#6}
-            \end{flushleft}
-        }
-        \case{r}{
-            \begin{flushright}
-                \formatheader{#1}{#2}{#3}{#4}{#5}{#6}
-            \end{flushright}
-        }
-    \end{switch}
-    \vspace{-\defaultvspacing}
-}
-
-% inline location def
-\NewDocumentCommand{\inlinelocation}{m O{\faIcon{map-marker-alt}}}{
-    #2\ #1
-}
-
-% define resume header link
-\NewDocumentCommand{\resumeheaderlink}{m m o}{%
-    % #1: The URL or link destination (required)
-    % #2: The link text (required)
-    % #3: Optional icon or additional text before the link text (optional)
-
-    % Check if the optional argument #3 (icon) is provided
-    \IfNoValueTF{#3}
-        { % No icon provided
-        \href{#1}{#2} % Just the URL text
-        }
-        { % Icon provided
-        \href{#1}{#3\ #2} % Icon and URL text
-        }
-}
+\newcommand{\defaulthspacing}{0.1cm}
 
 % define a default separator
 \RequirePackage{graphicx}
@@ -185,247 +125,355 @@
     \colorlet{#3}{#1!#2!black}
 }
 
+% define resumeheader block
+\newcommand{\formatheader}[5]{
+    \LARGE{\scshape#1 #2}
+
+    \IfValueTF{#3}{
+        \normalsize #3
+        \smallskip
+    }{}
+}
+
+% format links
+% todo: fix l/r padding issue
+\newcommand{\formatlinks}[1]{
+    % \small\begin{tabular}{@{}c@{}}#1\end{tabular}
+    \mbox{\small#1}
+}
+
+\makeatletter
+% Define key-value pairs for the resume header
+\define@key{resumeheader}{alignment}[c]{\def\RH@alignment{#1}}
+\define@key{resumeheader}{firstname}{\def\RH@firstname{#1}}
+\define@key{resumeheader}{lastname}{\def\RH@lastname{#1}}
+\define@key{resumeheader}{location}[]{\def\RH@location{#1}}
+\define@key{resumeheader}{locationicon}[]{\def\RH@locationicon{#1}}
+
+% Resume header command with key-value pairs and a group of links
+% todo: should i make links optional?
+\NewDocumentCommand{\resumeheader}{O{} m}{
+    \setkeys{resumeheader}{alignment=c,firstname=,lastname=,location=,locationicon=,#1}
+    \begin{switch}{\RH@alignment}
+        \case{c}{
+            \begin{center}
+                \LARGE{\scshape\RH@firstname\ \RH@lastname}\smallskip
+
+                \IfValueTF{\RH@location}{
+                    \normalsize\RH@location
+                    \smallskip
+                }{}
+
+                \formatlinks{#2}
+            \end{center}
+        }
+        \case{l}{
+            \begin{flushleft}
+                \LARGE{\scshape\RH@firstname\ \RH@lastname}\smallskip
+
+                \IfValueTF{\RH@location}{
+                    \normalsize\RH@location
+                    \smallskip
+                }{}
+
+                \formatlinks{#2}
+            \end{flushleft}
+        }
+        \case{r}{
+            \begin{flushright}
+                \LARGE{\scshape\RH@firstname\ \RH@lastname}\smallskip
+
+                \IfValueTF{\RH@location}{
+                    \normalsize\RH@location
+                    \smallskip
+                }{}
+
+                \formatlinks{#2}
+            \end{flushright}
+        }
+    \end{switch}
+    \vspace{-\defaultvspacing}
+}
+
+% inline location def
+\NewDocumentCommand{\inlinelocation}{m O{\faIcon{map-marker-alt}}}{
+    #2\ #1
+}
+
+% define resume header link
+\NewDocumentCommand{\resumeheaderlink}{m m o}{%
+    % #1: The URL or link destination (required)
+    % #2: The link text (required)
+    % #3: Optional icon or additional text before the link text (optional)
+
+    % Check if the optional argument #3 (icon) is provided
+    \IfNoValueTF{#3}
+        { % No icon provided
+        \href{#1}{#2}}
+        { % Icon provided
+        \href{#1}{#3\ #2}}
+}
+
 % define a command for creating an education block
-\NewDocumentCommand{\school}{
-    O{2} % Optional argument: 2-line layout (default) or 1-line layout
-    m % Mandatory argument: School Name
-    m % Mandatory argument: School Location
-    m % Mandatory argument: Date
-    O{} % Optional argument: GPA
-    O{} % Optional argument: Degree (can be empty)
-    O{} % Optional argument: Description (can be empty)
-}{
-    % Determine the layout based on the first argument
-    \begin{switch}{#1}
+\makeatletter
+% Define key-value pairs for the education block
+\define@key{edu}{layout}[2]{\def\SH@layout{#1}} % Default layout is 2
+\define@key{edu}{name}{\def\SH@name{#1}} % edu Name
+\define@key{edu}{location}{\def\SH@location{#1}} % edu Location
+\define@key{edu}{date}{\def\SH@date{#1}} % Date
+\define@key{edu}{gpa}[]{\def\SH@gpa{#1}} % GPA (optional)
+\define@key{edu}{degree}[]{\def\SH@degree{#1}} % Degree (optional)
+
+% edu command with key-value pairs and a separate description argument
+\NewDocumentCommand{\edu}{O{} m}{
+    \setkeys{edu}{layout=2,name=,location=,date=,gpa=,degree=,#1}
+
+    % Determine the layout based on the `layout` key
+    \begin{switch}{\SH@layout}
         \case{1}{
             % Case for 1-line layout
-            % Use tabularx environment to arrange content in one line
             \begin{tabularx}{\textwidth}{@{}lXr@{}}
-                % Display the school name in bold and location in italic
-                \textbf{#2}\hspace{\defaulthspacing}\textit{#3}
+                % Display the edu name in bold and location in italic
+                \textbf{\SH@name},~\textit{\SH@location}
                 % Optionally include the degree if provided
-                \IfNoValueTF{#6}%
-                    {}%
-                    {\separator\@ifmtarg{#6}{}{#6}}%
+                \IfValueTF{\SH@degree}
+                    {\separator~\SH@degree}
+                    {}
                 % Align GPA and date on the right
                 & \hfill
-                & \IfNoValueTF{#5}%
-                    {}%
-                    {\@ifmtarg{#5}{}{#5\separator}}%
-                #4
+                & \IfValueTF{\SH@gpa}
+                    {\SH@gpa~\separator}
+                    {}
+                \SH@date
             \end{tabularx}
 
-            % Handle the description based on the type
-            % Check if the description (#7) is provided
-            \IfNoValueTF{#7}
+            % Handle the description as a separate argument if provided
+            \IfNoValueTF{#2}
                 {}
-                {#7}
+                {#2}
         }
         \case{2}{
             % Case for 2-line layout (default)
-            % Use tabularx environment to arrange content in two lines
             \begin{tabularx}{\textwidth}{@{}lXr@{}}
-                % Display the school name in bold
-                \textbf{#2}
+                % Display the edu name in bold
+                \textbf{\SH@name}
                 % Optionally include the degree if provided
-                \IfNoValueTF{#6}%
-                    {}%
-                    {\separator\@ifmtarg{#6}{}{#6} }%
+                \IfValueTF{\SH@degree}
+                    {\separator \SH@degree}
+                    {}
                 % Align the date on the right
                 & \hfill
-                & #4 \\ % School Name and Date
-                % Display the school location in italic and GPA
-                \textit{#3}
+                & \SH@date \\ % edu Name and Date
+                % Display the edu location in italic and GPA
+                \textit{\SH@location}
                 & \hfill
-                & \IfNoValueTF{#5}%
-                    {}%
-                    {\@ifmtarg{#5}{}{#5}}%
+                & \IfValueTF{\SH@gpa}
+                    {\SH@gpa}
+                    {}
             \end{tabularx}
 
-            % Handle the description based on the type
-            % Check if the description (#7) is provided
-            \IfNoValueTF{#7}
+            % Handle the description as a separate argument if provided
+            \IfNoValueTF{#2}
                 {}
-                {#7}
+                {#2}
         }
     \end{switch}
 
     % Add vertical spacing after the entry
     \vspace{\defaultvspacing}
 }
+\makeatother
 
-% block for an experience item
-\NewDocumentCommand{\experience}{
-    O{2} % Optional argument: 2-line layout (default) or 1-line layout
-    m % Mandatory argument: Job Title
-    m % Mandatory argument: Company Name
-    m % Mandatory argument: Location
-    m % Mandatory argument: Date
-    O{} % Optional argument: Description (can be empty)
-    O{} % Optional argument: Link to company website (can be empty)
-}{
-    % Determine the layout based on the first argument
-    \begin{switch}{#1}
+
+\makeatletter
+% Define key-value pairs for the experience block
+\define@key{experience}{layout}[2]{\def\EX@layout{#1}} % Default layout is 2
+\define@key{experience}{title}{\def\EX@title{#1}} % Job Title
+\define@key{experience}{company}{\def\EX@company{#1}} % Company Name
+\define@key{experience}{location}{\def\EX@location{#1}} % Location
+\define@key{experience}{date}{\def\EX@date{#1}} % Date
+\define@key{experience}{link}[]{\def\EX@link{#1}} % Link to company website (optional)
+
+% Experience command with key-value pairs and a separate description argument
+\NewDocumentCommand{\experience}{O{} m}{
+    \setkeys{experience}{layout=2,title=,company=,location=,date=,link=,#1}
+
+    % Determine the layout based on the `layout` key
+    \begin{switch}{\EX@layout}
         \case{1}{
             % Case for 1-line layout
-            % Use tabularx environment to arrange content in one line
             \begin{tabularx}{\textwidth}{@{}lXr@{}}
-                % Display the job title in bold and location in italic
-                \textbf{#2}\hspace{0.5em}@\hspace{0.5em}#3
-                % Optionally include the company website if provided
-                \IfNoValueTF{#7}%
-                    {}%
-                    {\href{#7}{\linkicon}}%
-                % Align the date on the right
+                % Display the job title in bold and company name
+                \textbf{\EX@title}\ @\ \EX@company
+                % Check if the link is non-empty
+                \ifx\EX@link\@empty
+                    % Do nothing if link is empty
+                \else
+                    % If link is provided, insert icon with href
+                    ~\href{\EX@link}{\linkicon}
+                \fi
+                % Align the location and date on the right
                 & \hfill
-                & \textit{#4} \separator #5
+                & \textit{\EX@location} \separator \EX@date
             \end{tabularx}
 
-            % Handle the description based on the type
-            % Check if the description (#6) is provided
-            \IfNoValueTF{#6}
+            % Add the description within the 1-line layout
+            \IfNoValueTF{#2}
                 {}
-                {#6}
+                {#2}
         }
         \case{2}{
             % Case for 2-line layout (default)
-            % Use tabularx environment to arrange content in two lines
             \begin{tabularx}{\textwidth}{@{}lXr@{}}
                 % Display the job title in bold
-                \textbf{#2}
+                \textbf{\EX@title}
                 % Align the date on the right
                 & \hfill
-                & #5 \\ % Job Title and Date
+                & \EX@date \\ % Job Title and Date
                 % Display the company name and location
-                #3
-                % Optionally include the company website if provided
-                \IfNoValueTF{#7}%
-                    {}%
-                    {\href{#7}{\linkicon}}%
+                \EX@company
+                % Optionally include the company website link if provided
+                % Check if the link is non-empty
+                \ifx\EX@link\@empty
+                    % Do nothing if link is empty
+                \else
+                    % If link is provided, insert icon with href
+                    ~\href{\EX@link}{\linkicon}
+                \fi
                 & \hfill
-                & \textit{#4}
+                & \textit{\EX@location}
             \end{tabularx}
 
-            % Handle the description based on the type
-            % Check if the description (#6) is provided
-            \IfNoValueTF{#6}
+            % Add the description within the 2-line layout
+            \IfNoValueTF{#2}
                 {}
-                {#6}
+                {#2}
         }
     \end{switch}
 
     % Add vertical spacing after the entry
     \vspace{\defaultvspacing}
 }
+\makeatother
 
 % block for award item
-\NewDocumentCommand{\award}{
-    O{2} % Optional argument: 2-line layout (default) or 1-line layout
-    m % Mandatory argument: Award Title
-    m % Mandatory argument: Awarding Organization
-    m % Mandatory argument: Date
-    O{} % Optional argument: Amount $$ (can be empty)
-    O{} % Optional argument: Description (can be empty)
-}{
-    % Determine the layout based on the first argument
-    \begin{switch}{#1}
+\makeatletter
+% Define key-value pairs for the award block
+\define@key{award}{layout}[2]{\def\AW@layout{#1}} % Default layout is 2
+\define@key{award}{title}{\def\AW@title{#1}} % Award Title
+\define@key{award}{organization}{\def\AW@organization{#1}} % Awarding Organization
+\define@key{award}{date}{\def\AW@date{#1}} % Date
+\define@key{award}{amount}[]{\def\AW@amount{#1}} % Award amount (optional)
+
+% Award command with key-value pairs and a separate description argument
+\NewDocumentCommand{\award}{O{} m}{
+    \setkeys{award}{layout=2,title=,organization=,date=,amount=,#1}
+
+    % Determine the layout based on the `layout` key
+    \begin{switch}{\AW@layout}
         \case{1}{
             % Case for 1-line layout
-            % Use tabularx environment to arrange content in one line
             \begin{tabularx}{\textwidth}{@{}lXr@{}}
-                % Display the award title in bold and awarding organization in italic
-                \textbf{#2},\ #3 % Optionally include the amount if provided
-                \IfNoValueTF{#5}%
-                    {}%
-                    {\ (#5)}%
+                % Display the award title and organization
+                \textbf{\AW@title},\ \AW@organization
+                % Optionally include the amount if provided
+                \IfNoValueTF{\AW@amount}
+                    {} % Do nothing if amount is not provided
+                    { (\AW@amount)} % Add amount in parentheses if provided
                 % Align the date on the right
                 & \hfill
-                & #4
+                & \AW@date
             \end{tabularx}
 
-            % Handle the description based on the type
-            % Check if the description (#6) is provided
-            \IfNoValueTF{#6}
-                {}
-                {#6}
+            % Description as a separate argument
+            \IfNoValueTF{#2}
+                {} % Do nothing if no description
+                {#2}
         }
         \case{2}{
             % Case for 2-line layout (default)
-            % Use tabularx environment to arrange content in two lines
             \begin{tabularx}{\textwidth}{@{}lXr@{}}
-                % Display the award title in bold
-                \textbf{#2}
-
+                % Display the award title
+                \textbf{\AW@title}
                 % Align the date on the right
                 & \hfill
-                & #4 \\ % Award Title and Date
+                & \AW@date \\ % Award Title and Date
                 % Display the awarding organization
-                #3
+                \AW@organization
+                % Optionally include the amount if provided
                 & \hfill
-                & \IfNoValueTF{#5}%
-                    {}%
-                    {#5}
+                & \IfNoValueTF{\AW@amount}
+                    {} % Do nothing if no amount
+                    {\AW@amount}
             \end{tabularx}
 
-            % Handle the description based on the type
-            % Check if the description (#6) is provided
-            \IfNoValueTF{#6}
-                {}
-                {#6}
+            % Description as a separate argument
+            \IfNoValueTF{#2}
+                {} % Do nothing if no description
+                {#2}
         }
     \end{switch}
 
     % Add vertical spacing after the entry
     \vspace{\defaultvspacing}
 }
+\makeatother
 
 
 % build skill bars
-\RequirePackage{tikz}
-\NewDocumentCommand{\skillbar}{
-    O{5} % width of skill bar
-    m % skill text
-    m % skill percent (out of 100) ex. 25
-    O{1} % bar format style
-    }{%
+\makeatletter
+% Define key-value pairs for the skill bar
+\define@key{skillbar}{width}[5]{\def\SKB@width{#1}}      % Default width is 5
+\define@key{skillbar}{height}[0.45]{\def\SKB@height{#1}}  % Default height is 11
+\define@key{skillbar}{rounding}[6.5pt]{\def\SKB@rounding{#1}}  % Skill percent (default is 6.5pt)
+\define@key{skillbar}{percent}[50]{\def\SKB@percent{#1}}  % Skill percent (default is 50)
+\define@key{skillbar}{layout}[1]{\def\SKB@layout{#1}}     % Default layout is 1
+
+% Skill bar command with key-value pairs and a separate description argument
+\NewDocumentCommand{\skillbar}{O{} m}{
+    \setkeys{skillbar}{width=5,height=0.45,rounding=6.5pt,percent=50,layout=1,#1}
+
     \begin{tikzpicture}
-        % Extract width and skill value
-        \pgfmathsetmacro{\width}{#1}
-        \pgfmathsetmacro{\value}{#3}
-        \pgfmathsetmacro{\height}{0.4}
+        % Extract width, height, and skill value
+        \pgfmathsetmacro{\width}{\SKB@width}
+        \pgfmathsetmacro{\height}{\SKB@height}
+        \pgfmathsetmacro{\value}{\SKB@rounding}
+        \pgfmathsetmacro{\value}{\SKB@percent}
 
         % Calculate the fill proportion
         \pgfmathsetmacro{\fillwidth}{\width * (\value / 100)}
 
         % Draw the background rectangle with rounded corners
-        \draw[fill=lightaccent,lightaccent, rounded corners=2pt] (0,0) rectangle (\width,\height);
+        \draw[fill=lightaccent, rounded corners=\SKB@rounding, draw=none] (0,0) rectangle (\width,\height);
 
         % Draw the foreground rectangle with rounded corners and fill level
-        \draw[fill=white,accent, rounded corners=2pt] (0,0) rectangle (\fillwidth,\height);
+        \draw[fill=accent, rounded corners=\SKB@rounding, draw=none] (0,0) rectangle (\fillwidth,\height);
 
-        % Determine the label position based on the fourth argument
-        \pgfmathsetmacro{\labelpos}{#4}
-        \ifnum\labelpos=3
+        % Determine the label position based on the layout key
+        \pgfmathsetmacro{\labelpos}{\SKB@layout}
+        \ifnum\labelpos=1
             % Label the skill above the bar
-            \node[above left, anchor=east, inner sep=0pt] at (,0.625) {\small{#2}};
+            \node[above right, anchor=west, inner sep=0pt] at (0, 0.25+\height) {\small{#2}};
         \fi
         \ifnum\labelpos=2
             % Label the skill inside the bar with black text
-            \node[anchor=east, text=black, inner sep=0pt] at (-0.125,0.2) {\small{#2}};
+            \node[anchor=east, text=black, inner sep=0pt] at (-0.125, \height/2) {\small{#2}};
         \fi
-        \ifnum\labelpos=1
+        \ifnum\labelpos=3
             % Label the skill inside the bar with white text
-            \node[anchor=west, text=white, inner sep=0pt] at (0.05,0.2) {\small{#2}};
+            \node[anchor=west, text=white, inner sep=0pt] at (0.125, \height/2) {\small{#2}};
         \fi
     \end{tikzpicture}
     \vspace{\defaultvspacing}
 }
+\makeatother
+
 
 
 
 
 % footer
-\newcommand{\footer}{
+\newcommand{\lastupdated}{
   \vfill
   \begin{tightcenter}
     \footnotesize{\color{halfblack}{Last updated: \printdayon\today}}
