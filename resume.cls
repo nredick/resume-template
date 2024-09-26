@@ -468,8 +468,32 @@
 }
 \makeatother
 
+% block for skills with n cols
+\makeatletter
+% Define key-value pairs for the skill block
+\define@key{skills}{cols}[2]{\def\SK@cols{#1}} % Default cols is 2
 
+% Skill command with key-value pairs
+\NewDocumentCommand{\skills}{O{} m}{
+    \setkeys{skills}{cols=2,#1}
 
+    % Determine the number of cols based on the `cols` key
+
+    % if equals 1 then no multicols env
+    \ifnum\SK@cols=1
+        #2
+    \else
+        \setlength{\multicolsep}{0pt}
+        \begin{multicols}{\SK@cols}
+            \noindent
+            #2
+        \end{multicols}
+    \fi
+
+    % Add vertical spacing after the entry
+    \vspace{\defaultvspacing}
+}
+\makeatother
 
 
 % footer
