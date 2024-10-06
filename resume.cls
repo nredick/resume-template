@@ -61,6 +61,15 @@
 % skill bars
 \RequirePackage{tikz}
 
+% publications import
+\RequirePackage[ % References
+    backend=biber,
+    style=nature, % apa, nature, ieee, etc.
+    sorting=ydnt, % Sort by year (descending), name, title
+]{biblatex}
+\addbibresource{publications.bib}
+\RequirePackage{csquotes}
+
 % table settings
 \RequirePackage{supertabular,tabularx}
 
