@@ -6,6 +6,7 @@
 \LoadClass[10pt]{article}
 
 % font family
+\RequirePackage{luainputenc}
 \RequirePackage[T1]{fontenc}
 % more font options: https://tug.org/FontCatalogue
 \RequirePackage[default]{sourcesanspro} % sans serif
@@ -134,18 +135,6 @@
     \colorlet{#3}{#1!#2!black}
 }
 
-% define resumeheader block
-\newcommand{\formatheader}[5]{
-    \LARGE{\scshape#1 #2}
-
-    \ifx#3\@empty
-        % Do nothing if #3 is empty
-    \else
-        \normalsize #3
-        \smallskip
-    \fi
-}
-
 % format links
 % todo: fix l/r padding issue
 \newcommand{\formatlinks}[1]{
@@ -168,43 +157,34 @@
     \begin{switch}{\RH@alignment}
         \case{c}{
             \begin{center}
-                \LARGE{\scshape\RH@firstname\ \RH@lastname}\smallskip
-
-                \ifx\RH@location\@empty
-                    % Do nothing if \RH@location is empty
+                \LARGE{\scshape\RH@firstname~\RH@lastname}
+                \ifx\RH@location\undefined
                 \else
+                    \smallbreak
                     \normalsize\RH@location
-                    \smallskip
                 \fi
-
                 \formatlinks{#2}
             \end{center}
         }
         \case{l}{
             \begin{flushleft}
-                \LARGE{\scshape\RH@firstname\ \RH@lastname}\smallskip
-
-                \ifx\RH@location\@empty
-                    % Do nothing if \RH@location is empty
+                \LARGE{\scshape\RH@firstname~\RH@lastname}
+                \ifx\RH@location\undefined
                 \else
+                    \smallbreak
                     \normalsize\RH@location
-                    \smallskip
                 \fi
-
                 \formatlinks{#2}
             \end{flushleft}
         }
         \case{r}{
             \begin{flushright}
-                \LARGE{\scshape\RH@firstname\ \RH@lastname}\smallskip
-
-                \ifx\RH@location\@empty
-                    % Do nothing if \RH@location is empty
+                \LARGE{\scshape\RH@firstname~\RH@lastname}
+                \ifx\RH@location\undefined
                 \else
+                    \smallbreak
                     \normalsize\RH@location
-                    \smallskip
                 \fi
-
                 \formatlinks{#2}
             \end{flushright}
         }
@@ -224,7 +204,7 @@
     % #3: Optional icon or additional text before the link text (optional)
 
     % Check if the optional argument #3 (icon) is provided
-    \ifx#3\@empty
+    \ifx#3\undefined
         % No icon provided
         \href{#1}{#2}
     \else
@@ -255,14 +235,14 @@
                 % Display the edu name in bold and location in italic
                 \textbf{\SH@name},~\textit{\SH@location}
                 % Optionally include the degree if provided
-                \ifx\SH@degree\@empty
+                \ifx\SH@degree\undefined
                     % Do nothing if degree is empty
                 \else
                     \separator\SH@degree
                 \fi
                 % Align GPA and date on the right
                 & \hfill
-                & \ifx\SH@gpa\@empty
+                & \ifx\SH@gpa\undefined
                     \SH@date
                 \else
                     \SH@gpa\separator\SH@date
@@ -270,7 +250,7 @@
             \end{tabularx}
 
             % Handle the description as a separate argument if provided
-            \ifx#2\@empty
+            \ifx#2\undefined
                 % Do nothing if #2 is empty
             \else
                 #2
@@ -282,7 +262,7 @@
                 % Display the edu name in bold
                 \textbf{\SH@name}
                 % Optionally include the degree if provided
-                \ifx\SH@degree\@empty
+                \ifx\SH@degree\undefined
                     % Do nothing if degree is empty
                 \else
                     \separator \SH@degree
@@ -293,7 +273,7 @@
                 % Display the edu location in italic and GPA
                 \textit{\SH@location}
                 & \hfill
-                & \ifx\SH@gpa\@empty
+                & \ifx\SH@gpa\undefined
                     % Do nothing if GPA is empty
                 \else
                     \SH@gpa
@@ -301,7 +281,7 @@
             \end{tabularx}
 
             % Handle the description as a separate argument if provided
-            \ifx#2\@empty
+            \ifx#2\undefined
                 % Do nothing if #2 is empty
             \else
                 #2
@@ -348,7 +328,7 @@
             \end{tabularx}
 
             % Add the description within the 1-line layout
-            \ifx#2\@empty
+            \ifx#2\undefined
                 % Do nothing if #2 is empty
             \else
                 #2
@@ -377,7 +357,7 @@
             \end{tabularx}
 
             % Add the description within the 2-line layout
-            \ifx#2\@empty
+            \ifx#2\undefined
                 % Do nothing if #2 is empty
             \else
                 #2
@@ -422,7 +402,7 @@
             \end{tabularx}
 
             % Description as a separate argument
-            \ifx#2\@empty
+            \ifx#2\undefined
                 % Do nothing if no description
             \else
                 #2
@@ -448,7 +428,7 @@
             \end{tabularx}
 
             % Description as a separate argument
-            \ifx#2\@empty
+            \ifx#2\undefined
                 % Do nothing if no description
             \else
                 #2
