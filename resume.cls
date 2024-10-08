@@ -138,10 +138,12 @@
 \newcommand{\formatheader}[5]{
     \LARGE{\scshape#1 #2}
 
-    \IfValueTF{#3}{
+    \ifx#3\@empty
+        % Do nothing if #3 is empty
+    \else
         \normalsize #3
         \smallskip
-    }{}
+    \fi
 }
 
 % format links
@@ -168,10 +170,12 @@
             \begin{center}
                 \LARGE{\scshape\RH@firstname\ \RH@lastname}\smallskip
 
-                \IfValueTF{\RH@location}{
+                \ifx\RH@location\@empty
+                    % Do nothing if \RH@location is empty
+                \else
                     \normalsize\RH@location
                     \smallskip
-                }{}
+                \fi
 
                 \formatlinks{#2}
             \end{center}
@@ -180,10 +184,12 @@
             \begin{flushleft}
                 \LARGE{\scshape\RH@firstname\ \RH@lastname}\smallskip
 
-                \IfValueTF{\RH@location}{
+                \ifx\RH@location\@empty
+                    % Do nothing if \RH@location is empty
+                \else
                     \normalsize\RH@location
                     \smallskip
-                }{}
+                \fi
 
                 \formatlinks{#2}
             \end{flushleft}
@@ -192,10 +198,12 @@
             \begin{flushright}
                 \LARGE{\scshape\RH@firstname\ \RH@lastname}\smallskip
 
-                \IfValueTF{\RH@location}{
+                \ifx\RH@location\@empty
+                    % Do nothing if \RH@location is empty
+                \else
                     \normalsize\RH@location
                     \smallskip
-                }{}
+                \fi
 
                 \formatlinks{#2}
             \end{flushright}
@@ -216,11 +224,13 @@
     % #3: Optional icon or additional text before the link text (optional)
 
     % Check if the optional argument #3 (icon) is provided
-    \IfNoValueTF{#3}
-        { % No icon provided
-        \href{#1}{#2}}
-        { % Icon provided
-        \href{#1}{#3\ #2}}
+    \ifx#3\@empty
+        % No icon provided
+        \href{#1}{#2}
+    \else
+        % Icon provided
+        \href{#1}{#3~#2}
+    \fi
 }
 
 % define a command for creating an education block
@@ -245,21 +255,26 @@
                 % Display the edu name in bold and location in italic
                 \textbf{\SH@name},~\textit{\SH@location}
                 % Optionally include the degree if provided
-                \IfValueTF{\SH@degree}
-                    {\separator~\SH@degree}
-                    {}
+                \ifx\SH@degree\@empty
+                    % Do nothing if degree is empty
+                \else
+                    \separator\SH@degree
+                \fi
                 % Align GPA and date on the right
                 & \hfill
-                & \IfValueTF{\SH@gpa}
-                    {\SH@gpa~\separator}
-                    {}
-                \SH@date
+                & \ifx\SH@gpa\@empty
+                    \SH@date
+                \else
+                    \SH@gpa\separator\SH@date
+                \fi
             \end{tabularx}
 
             % Handle the description as a separate argument if provided
-            \IfNoValueTF{#2}
-                {}
-                {#2}
+            \ifx#2\@empty
+                % Do nothing if #2 is empty
+            \else
+                #2
+            \fi
         }
         \case{2}{
             % Case for 2-line layout (default)
@@ -267,24 +282,30 @@
                 % Display the edu name in bold
                 \textbf{\SH@name}
                 % Optionally include the degree if provided
-                \IfValueTF{\SH@degree}
-                    {\separator \SH@degree}
-                    {}
+                \ifx\SH@degree\@empty
+                    % Do nothing if degree is empty
+                \else
+                    \separator \SH@degree
+                \fi
                 % Align the date on the right
                 & \hfill
                 & \SH@date \\ % edu Name and Date
                 % Display the edu location in italic and GPA
                 \textit{\SH@location}
                 & \hfill
-                & \IfValueTF{\SH@gpa}
-                    {\SH@gpa}
-                    {}
+                & \ifx\SH@gpa\@empty
+                    % Do nothing if GPA is empty
+                \else
+                    \SH@gpa
+                \fi
             \end{tabularx}
 
             % Handle the description as a separate argument if provided
-            \IfNoValueTF{#2}
-                {}
-                {#2}
+            \ifx#2\@empty
+                % Do nothing if #2 is empty
+            \else
+                #2
+            \fi
         }
     \end{switch}
 
@@ -327,9 +348,11 @@
             \end{tabularx}
 
             % Add the description within the 1-line layout
-            \IfNoValueTF{#2}
-                {}
-                {#2}
+            \ifx#2\@empty
+                % Do nothing if #2 is empty
+            \else
+                #2
+            \fi
         }
         \case{2}{
             % Case for 2-line layout (default)
@@ -354,9 +377,11 @@
             \end{tabularx}
 
             % Add the description within the 2-line layout
-            \IfNoValueTF{#2}
-                {}
-                {#2}
+            \ifx#2\@empty
+                % Do nothing if #2 is empty
+            \else
+                #2
+            \fi
         }
     \end{switch}
 
@@ -386,18 +411,22 @@
                 % Display the award title and organization
                 \textbf{\AW@title},\ \AW@organization
                 % Optionally include the amount if provided
-                \IfNoValueTF{\AW@amount}
-                    {} % Do nothing if amount is not provided
-                    { (\AW@amount)} % Add amount in parentheses if provided
+                \ifx\AW@amount\@empty
+                    % Do nothing if amount is not provided
+                \else
+                    ~(\AW@amount) % Add amount in parentheses if provided
+                \fi
                 % Align the date on the right
                 & \hfill
                 & \AW@date
             \end{tabularx}
 
             % Description as a separate argument
-            \IfNoValueTF{#2}
-                {} % Do nothing if no description
-                {#2}
+            \ifx#2\@empty
+                % Do nothing if no description
+            \else
+                #2
+            \fi
         }
         \case{2}{
             % Case for 2-line layout (default)
@@ -411,15 +440,19 @@
                 \AW@organization
                 % Optionally include the amount if provided
                 & \hfill
-                & \IfNoValueTF{\AW@amount}
-                    {} % Do nothing if no amount
-                    {\AW@amount}
+                & \ifx\AW@amount\@empty
+                    % Do nothing if no amount
+                \else
+                    \AW@amount
+                \fi
             \end{tabularx}
 
             % Description as a separate argument
-            \IfNoValueTF{#2}
-                {} % Do nothing if no description
-                {#2}
+            \ifx#2\@empty
+                % Do nothing if no description
+            \else
+                #2
+            \fi
         }
     \end{switch}
 
