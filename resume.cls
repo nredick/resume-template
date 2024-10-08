@@ -68,7 +68,7 @@
     style=nature, % apa, nature, ieee, etc.
     sorting=ydnt, % Sort by year (descending), name, title
 ]{biblatex}
-\addbibresource{publications.bib}
+\addbibresource{resume.bib}
 \RequirePackage{csquotes}
 
 % table settings
