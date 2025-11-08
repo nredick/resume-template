@@ -10,6 +10,8 @@ For any info on how it works, default settings, examples, snippets, etc. please 
 
 This template is extremely flexible, but was designed with an academic focus. It includes extra, optional sections for things like publications, field work, teaching, etc. that I could never find (to my frustration) on other templates. There are also several flexible layout options. 
 
+The generated PDF is automatically published to your github.io site, but this can also be easily turned off. 
+
 ## Why should I use latex for my resume/CV?
 
 The best part about using latex for your resume/CV is that you can show/hide things instantly by commenting entries in/out. This way, your tex document can exist as a complete history of your experiences, and you can turn entries on/off depending on your needs for a given job app, scholarship app, etc. 
