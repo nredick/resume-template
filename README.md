@@ -8,7 +8,7 @@ For any info on how it works, default settings, examples, snippets, etc. please 
 
 ## Cool stuff
 
-This template is extremely flexible, but was designed with an academic focus. It includes extra, optional sections for things like publications, field work, teaching, etc. that I could never find (to my frustration) on other templates. 
+This template is extremely flexible, but was designed with an academic focus. It includes extra, optional sections for things like publications, field work, teaching, etc. that I could never find (to my frustration) on other templates. There are also several flexible layout options. 
 
 ## Why should I use latex for my resume/CV?
 
