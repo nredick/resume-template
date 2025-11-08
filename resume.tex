@@ -56,6 +56,19 @@
     \end{resumeitemize}
 }
 
+\edu[
+    layout=3,
+    name=University of Example,
+    location={Example City, EX},
+    date=\daterange{2022/06/01}{2022/08/01},
+    gpa=3.78/4.00,
+    degree=BSc
+]{
+    \begin{resumeitemize}
+        \item \lipsum[1][2-3]
+    \end{resumeitemize}
+}
+
 %% EXPERIENCE %%
 \section{Experience}
 
@@ -69,6 +82,19 @@
 ]{
     \begin{resumeitemize}
         \item \lipsum[1][1-2]
+    \end{resumeitemize}
+}
+
+\experience[
+    layout=3,
+    title=Another Job Title,
+    company=Company,
+    location={Example City, EX}, % use {} when you need a comma in the field
+    date=\daterange{2021/06/01}{2021/08/01},
+    link=https://google.com
+]{
+    \begin{resumeitemize}
+        \item \lipsum[1][2-3]
     \end{resumeitemize}
 }
 
@@ -93,7 +119,7 @@
 \section{Awards}
 
 \award[
-    layout=3,
+    layout=1,
     title=Best Paper Award,
     organization=Conference on X,
     date=2023,
