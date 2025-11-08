@@ -2,4 +2,4 @@
 
 # `resume-template`
 
-This repo's Github Workflow setup was inspired by [jitinnair1/autoCV](https://github.com/jitinnair1/autoCV). The $\LaTeX$ source code is my own.
+This repo's Github Workflow setup was inspired by [jitinnair1/autoresume](https://github.com/jitinnair1/autoresume). The $\LaTeX$ source code is my own.

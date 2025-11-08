@@ -1,9 +1,9 @@
 % resume.sty
-\ProvidesPackage{resume}[2024/08/05 Academic RESUME Stylings]
+\ProvidesPackage{resume}
 
 % define colors
 \RequirePackage{xcolor}
-\definecolor{accent}{HTML}{2e70bf}
+\definecolor{accent}{HTML}{245998}
 \definecolor{white}{HTML}{FFFFFF}
 \definecolor{black}{HTML}{000000}
 
@@ -39,4 +39,36 @@
 % \titleformat{⟨command⟩}[⟨shape⟩]{⟨format⟩}{⟨label⟩}{⟨sep⟩}{⟨before-code⟩}[⟨after-code⟩]
 \titleformat{\section}[block]{\color{accent}\large\scshape\raggedright}{}{0em}{}[\titlerule]
 
-\titlespacing{\section}{0ex}{-0.15em}{\defaultvspacing} % left, before, after
+\titlespacing{\section}{0pt}{2pt}{\defaultvspacing} % left, before, after
+
+% add space before printbibliography text
+\renewcommand{\bibsetup}{}
+
+% make it so that unpublished bib entries are treated as misc
+\DeclareBibliographyAlias{unpublished}{misc}
+
+\DeclareSourcemap{
+  \maps{
+    \map{
+      \step[typesource=unpublished, typetarget=misc]
+    }
+  }
+}
+
+% fields that you don't want shown in the references
+\AtEveryBibitem{
+    \clearlist{address}
+    % \clearfield{date}
+    \clearfield{eprint}
+    %  \clearfield{isbn}
+    %  \clearfield{issn}
+    % \clearlist{location}
+    % \clearfield{month}
+    \clearfield{series}
+    \clearlist{language}
+    \clearfield{issue}
+    %  all three of these must be included to remove (visited on ...)
+    \clearfield{urldate}
+    \clearfield{urlyear}
+    \clearfield{urlmonth}
+}
